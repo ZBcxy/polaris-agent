@@ -51,6 +51,29 @@ docker run -p 8000:8000 -e OPENAI_API_KEY=sk-... ghcr.io/zbcxy/polaris-agent:lat
 docker compose up -d
 ```
 
+## Local Models (Zero API Key)
+
+```bash
+# Ollama (recommended)
+ollama pull qwen3:8b
+LOCAL_LLM_PROVIDER=ollama LOCAL_LLM_MODEL=qwen3:8b polaris
+
+# vLLM / llama.cpp / any OpenAI-compatible
+LOCAL_LLM_PROVIDER=openai_compatible LOCAL_LLM_URL=http://localhost:8000/v1 polaris
+```
+
+| Backend | URL | Models |
+|---------|-----|--------|
+| Ollama | `localhost:11434` | qwen3, llama3.1, mistral, deepseek-r1 |
+| vLLM | `localhost:8000` | Any HF model |
+| llama.cpp | `localhost:8080` | GGUF format |
+
+```python
+from core.planner.local_llm import LocalLLM
+llm = LocalLLM.quick_start()  # auto-discover
+planner = create_local_planner("ollama", "qwen3:14b")
+```
+
 ## Supported Protocols
 
 ### MCP (Model Context Protocol) — v2025-11-25
@@ -146,7 +169,15 @@ A2A methods: `tasks/send`, `tasks/sendSubscribe`, `tasks/get`, `tasks/cancel`, `
 | `POLARIS_AUTONOMY` | Autonomy level (L0-L4) | `L2` |
 | `POLARIS_MAX_STEPS` | Max OODA iterations | `20` |
 
-#### Memory & Embedding
+#### Local LLM
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `LOCAL_LLM_PROVIDER` | ollama / openai_compatible | — |
+| `LOCAL_LLM_MODEL` | Model name | `qwen3:8b` |
+| `LOCAL_LLM_URL` | Endpoint URL | `http://localhost:11434/v1` |
+
+### Memory & Embedding
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -172,6 +203,10 @@ JWT_SECRET=your-production-secret-here
 # Agent
 POLARIS_AUTONOMY=L3
 POLARIS_MAX_STEPS=30
+
+# Local (no API key needed)
+# LOCAL_LLM_PROVIDER=ollama
+# LOCAL_LLM_MODEL=qwen3:8b
 
 # Memory
 EMBEDDING_PROVIDER=openai
