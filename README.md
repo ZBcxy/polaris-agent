@@ -7,6 +7,7 @@
 ![License](https://img.shields.io/badge/license-Apache%202.0-orange)
 ![Protocols](https://img.shields.io/badge/protocols-MCP%20%7C%20A2A-purple)
 ![Tests](https://img.shields.io/badge/tests-139%20passed-brightgreen)
+[![CI](https://github.com/ZBcxy/polaris-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/ZBcxy/polaris-agent/actions/workflows/ci.yml)
 
 ## Architecture
 
